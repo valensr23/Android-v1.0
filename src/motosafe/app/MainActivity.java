@@ -64,7 +64,7 @@ public class MainActivity extends Activity  {
 		
 		@Override
 		public void onClick(View v) {
-			sendSMS("667783430","Mi posicion es latitud:" );
+			sendSMS("000","Mi posicion es latitud:" );
 			
 		}
 	});
