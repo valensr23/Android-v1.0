@@ -29,7 +29,8 @@ public final class R {
         public static final int LblPosLongitud=0x7f080003;
         public static final int LblPosPrecision=0x7f080004;
         public static final int LblPosicion=0x7f080001;
-        public static final int action_settings=0x7f080006;
+        public static final int action_settings=0x7f080007;
+        public static final int buttonSMS=0x7f080006;
         public static final int textView_estado_BT=0x7f080000;
     }
     public static final class layout {

@@ -16,8 +16,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.telephony.*;
 
 
 	
@@ -40,6 +43,9 @@ public class MainActivity extends Activity  {
 	private LocationManager locManager;
 	private LocationListener locListener;
 	
+	//boton SMS
+	Button buttonSMS;
+	
 
 	
 @Override
@@ -52,6 +58,18 @@ public class MainActivity extends Activity  {
 	lblLongitud = (TextView) findViewById(R.id.LblPosLongitud);
 	lblPrecision = (TextView) findViewById(R.id.LblPosPrecision);
 	lblEstado = (TextView) findViewById(R.id.LblEstado);
+	//inicializo button y fijamos la accion que queremos que desarrolle
+	buttonSMS = (Button)findViewById(R.id.buttonSMS);
+	buttonSMS.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			sendSMS("667783430","Mi posicion es latitud:" );
+			
+		}
+	});
+	
+
 	//Comprobamos si el GPS esta encendido o apagado
 		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 	    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
@@ -272,7 +290,13 @@ private void mostrarPosicion(Location loc) {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Metodo envio SMS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+private void sendSMS (String phoneNumber, String message){
+	SmsManager sms = SmsManager.getDefault();
+	sms.sendTextMessage(phoneNumber, null, message, null, null);
+}
 
 
 

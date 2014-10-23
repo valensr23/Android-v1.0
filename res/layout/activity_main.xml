@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="114dp"
     android:gravity="center_vertical|center_horizontal"
-    android:textSize="10sp" />
+    android:textSize="20sp" />
 
 <TextView android:id="@+id/LblPosicion"
 	    android:layout_width="fill_parent" 
@@ -48,11 +48,15 @@
 	    android:id="@+id/LblEstado"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/textView_estado_BT"
-	    android:layout_alignTop="@+id/textView_estado_BT"
 	    android:layout_margin="5dip"
 	    android:layout_marginTop="113dp"
 	    android:background="#aaaaaa"
 	    android:textColor="#000000" />
+	
+	<Button
+	    android:id="@+id/buttonSMS"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="Enviar SMS" />
 
 </LinearLayout>
