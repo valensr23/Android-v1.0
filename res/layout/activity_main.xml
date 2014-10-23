@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,18 +10,49 @@
     android:gravity="center_vertical|center_horizontal"
 	android:orientation="vertical">
     
-
 <TextView
-	
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:id="@+id/textView_estado_BT"
-	android:gravity="center_vertical|center_horizontal"
-	android:textSize="20sp"
-	android:layout_weight="1" />
- 
+    android:id="@+id/textView_estado_BT"
+    android:layout_width="match_parent"
+    android:layout_height="114dp"
+    android:gravity="center_vertical|center_horizontal"
+    android:textSize="10sp" />
 
+<TextView android:id="@+id/LblPosicion"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:layout_margin="5dip"
+	    android:text="Posición Actual:" />
+    
+	<TextView android:id="@+id/LblPosLatitud"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:layout_margin="5dip" 
+	    android:background="#aaaaaa" 
+	    android:textColor="#000000" />
+	    
+	<TextView android:id="@+id/LblPosLongitud"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:layout_margin="5dip"
+	    android:background="#aaaaaa" 
+	    android:textColor="#000000" />
+	    
+	<TextView android:id="@+id/LblPosPrecision"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:layout_margin="5dip"
+	    android:background="#aaaaaa" 
+	    android:textColor="#000000" />
 
+	<TextView
+	    android:id="@+id/LblEstado"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/textView_estado_BT"
+	    android:layout_alignTop="@+id/textView_estado_BT"
+	    android:layout_margin="5dip"
+	    android:layout_marginTop="113dp"
+	    android:background="#aaaaaa"
+	    android:textColor="#000000" />
 
-
-</RelativeLayout>
+</LinearLayout>

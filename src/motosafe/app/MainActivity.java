@@ -8,17 +8,21 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 	
 import java.util.Set;
-
+ 
 
 
 public class MainActivity extends Activity  {
@@ -27,6 +31,14 @@ public class MainActivity extends Activity  {
 	private static final int REQUEST_ENABLE_BT = 1;
 	private static final String NOMBRE_DISPOSITIVO_BT = "HC-06";//Nombre de nuestro dispositivo bluetooth.
 	private TextView tvInformacion;
+	//TextView de la posicion del GPS
+	private TextView lblLatitud;
+	private TextView lblLongitud;
+	private TextView lblPrecision;
+	private TextView lblEstado;
+	
+	private LocationManager locManager;
+	private LocationListener locListener;
 	
 
 	
@@ -36,6 +48,10 @@ public class MainActivity extends Activity  {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_main);
 	tvInformacion = (TextView) findViewById(R.id.textView_estado_BT);
+	lblLatitud = (TextView) findViewById(R.id.LblPosLatitud);
+	lblLongitud = (TextView) findViewById(R.id.LblPosLongitud);
+	lblPrecision = (TextView) findViewById(R.id.LblPosPrecision);
+	lblEstado = (TextView) findViewById(R.id.LblEstado);
 	//Comprobamos si el GPS esta encendido o apagado
 		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 	    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
@@ -55,12 +71,13 @@ public class MainActivity extends Activity  {
 	Por lo tanto invocamos aqui al método que activa el BT y GPS*/
 	super.onResume();
 	descubrirDispositivosBT();
-
+	comenzarLocalizacion();
 	}
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////////////////////////
+//Metodo para comprobar el estado del GPS y en caso de estar desactivado activarlo.
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 private void showGPSDisabledAlertToUser(){
 	new AlertDialog.Builder(this)
@@ -89,14 +106,15 @@ private void showGPSDisabledAlertToUser(){
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//Vemos si hay dispositivos emparejados al BT
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	private void descubrirDispositivosBT() {
 
 	/*
 	Este método comprueba si nuestro dispositivo dispone de conectividad bluetooh.
 	En caso afirmativo, si estuviera desctivada, intenta activarla.
-	En caso negativo presenta un mensaje al usuario y sale de la aplicación.
+	En caso negativo sale de la aplicación.
 	*/
 	
 	//Comprobamos que el dispositivo tiene adaptador bluetooth
@@ -145,7 +163,7 @@ private void showGPSDisabledAlertToUser(){
 	}
 }
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
 
@@ -160,6 +178,10 @@ private void showGPSDisabledAlertToUser(){
 	
 	}
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Dialogos para la activacion del BT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private void muestraDialogoConfirmacionActivacion() {
 	new AlertDialog.Builder(this)
@@ -187,6 +209,69 @@ private void muestraDialogoConfirmacionActivacion() {
 		}).show();
 	
 	}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Metodo para obtener la LOCALIZACION del dispositivo
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+private void comenzarLocalizacion()
+{
+	
+ //Obtenemos una referencia al LocationManager
+ locManager = 
+  (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+ 
+ //Obtenemos la última posición conocida
+ Location loc = 
+  locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+ 
+ //Mostramos la última posición conocida
+ mostrarPosicion(loc);
+ 
+ //Nos registramos para recibir actualizaciones de la posición
+ locListener = new LocationListener() {
+  public void onLocationChanged(Location location) {
+   mostrarPosicion(location);
+  }
+  public void onProviderDisabled(String provider){
+   lblEstado.setText("Provider OFF");
+  }
+  public void onProviderEnabled(String provider){
+   lblEstado.setText("Provider ON ");
+  }
+  //Actualizamos la posicion del GPS cada 30 segundos
+  public void onStatusChanged(String provider, int status, Bundle extras){
+  }
+ };
+ 
+ locManager.requestLocationUpdates(
+   LocationManager.GPS_PROVIDER, 30, 0, locListener);
+}
+
+
+private void mostrarPosicion(Location loc) {
+	/*Metodo que comprueba si la variable loc contiene información, en caso 
+	 * contrario nos muestra el mensaje sin datos para latitud y longitud
+	 * en caso contrario nos muestra la posición en la que nos encontramos
+	 */
+	if(loc != null)
+    {
+        lblLatitud.setText("Latitud: " + String.valueOf(loc.getLatitude()));
+        lblLongitud.setText("Longitud: " + String.valueOf(loc.getLongitude()));
+        lblPrecision.setText("Precision: " + String.valueOf(loc.getAccuracy()));
+    }
+    else
+    {
+        lblLatitud.setText("Latitud: (sin_datos)");
+        lblLongitud.setText("Longitud: (sin_datos)");
+        lblPrecision.setText("Precision: (sin_datos)");
+    }
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
